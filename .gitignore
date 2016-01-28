@@ -1,0 +1,12 @@
+.classpath
+*.jar
+*.tar
+*.zip
+*.tgz
+*.exe
+*.dll
+*.cab
+*.bak
+*.mdl
+*.cat
+*.class
