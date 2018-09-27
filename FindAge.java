@@ -7,6 +7,9 @@ import java.util.Date;
 
 /**
  * Created by Asus on 21 Sep 2018.
+ *
+ * Problem: User inputs date in MM/dd/yyyy format. Print age in years, month(s), day(s) old.
+ * If user inputs date greater than the current date, return 0 for all.
  */
 public class FindAge {
 
@@ -21,16 +24,26 @@ public class FindAge {
                     new BufferedReader(new InputStreamReader(System.in));
             inputString = reader.readLine();
 
+            Date currentDate = removeTime(new Date());
             Date inputDate = convertToDate(inputString);
-            Calendar age = getAge(inputDate);
 
-            System.out.print("Age is " + age.get(Calendar.YEAR) + " years, " + age.get(Calendar.MONTH) + " month(s), "
-                + age.get(Calendar.DAY_OF_MONTH) + ", days old.");
+            if(currentDate.compareTo(inputDate) <= 0) {
+                System.out.println("Age is 0");
+            } else {
+                Calendar age = getDifference(new Date(), inputDate);
+                System.out.print("Age is " + age.get(Calendar.YEAR) + " years, " + age.get(Calendar.MONTH) + " month(s), "
+                        + age.get(Calendar.DAY_OF_MONTH) + ", days old.");
+            }
         } catch (Exception e) {
             System.out.println("Input is invalid: " + inputString);
             e.printStackTrace();
         }
 
+    }
+
+    public static Date removeTime(Date date) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        return sdf.parse(sdf.format(date));
     }
 
     public static Date convertToDate(String dateStr) throws ParseException {
@@ -39,11 +52,11 @@ public class FindAge {
         return date;
     }
 
-    public static Calendar getAge(Date birthday) {
-        long currentDate = Calendar.getInstance().getTimeInMillis();
-        long birthdayDate = birthday.getTime();
+    public static Calendar getDifference(Date date1, Date date2) {
+        long date1Ms = date1.getTime();
+        long date2Ms = date2.getTime();
 
-        long timeDifference = currentDate - birthdayDate;
+        long timeDifference = date1Ms - date2Ms;
         Date diffDate = new Date(timeDifference);
 
         Calendar c = Calendar.getInstance();
